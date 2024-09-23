@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+
+<generatorConfiguration>
+    <classPathEntry
+            location="/Users/wuseungwoo/.m2/repository/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"/>
+    <context id="sahara" targetRuntime="MyBatis3DynamicSQL">
+
+        <commentGenerator type="com.datalumina.mybatis.tool.CustomCommentGenerator">
+            <property name="suppressDate" value="true"/>
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/sahara?useSSL=false"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <javaTypeResolver type="com.datalumina.mybatis.tool.CustomJavaTypeResolver">
+            <property name="useLocalDate" value="false"/>
+        </javaTypeResolver>
+
+        <!--成的类包路径-->
+        <javaModelGenerator targetPackage="com.sahara.dictionary.dto"
+                            targetProject="../sahara-database-dictionary/src/main/java">
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--生成的mapper查询类包路径-->
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.sahara.dictionary.dao.dynamic"
+                             targetProject="../sahara-database-dictionary/src/main/java">
+        </javaClientGenerator>
+
+        <table tableName="table_column_meta">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

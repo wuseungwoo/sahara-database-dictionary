@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sahara.dictionary.dto.mapper.TableColumnMapper">
+    <insert id="batchInsert">
+        insert into sahara.table_column_meta (
+        system_name,
+        module_name,
+        db_name,
+        table_name,
+        order_type,
+        storage_engine,
+        description,
+        column_name,
+        column_type,
+        column_length,
+        column_decimal_nums,
+        column_is_index,
+        column_order,
+        column_is_null,
+        column_default_value,
+        column_description,
+        column_remark,
+        column_create_by,
+        column_create_time,
+        column_update_by,
+        column_update_time,
+        system_version
+        )
+        values
+        <foreach collection="records" item="record" separator=",">
+            (
+            #{record.systemName},
+            #{record.moduleName},
+            #{record.dbName},
+            #{record.tableName},
+            #{record.orderType},
+            #{record.storageEngine},
+            #{record.description},
+            #{record.columnName},
+            #{record.columnType},
+            #{record.columnLength},
+            #{record.columnDecimalNums},
+            #{record.columnIsIndex},
+            #{record.columnOrder},
+            #{record.columnIsNull},
+            #{record.columnDefaultValue},
+            #{record.columnDescription},
+            #{record.columnRemark},
+            #{record.columnCreateBy},
+            #{record.columnCreateTime},
+            #{record.columnUpdateBy},
+            #{record.columnUpdateTime},
+            #{record.systemVersion}
+            )
+        </foreach>
+    </insert>
+</mapper>

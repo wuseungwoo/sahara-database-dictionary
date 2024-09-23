@@ -1,11 +1,35 @@
 package com.sahara.dictionary.bean;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.List;
 
 /**
  * 表信息
+ * 序号，系统名，模块名，表名，列名，数据类型，长度，小数位数，主键，允许空，默认值，列说明，备注，创建人，创建时间，修改人，修改时间，当前版本
  */
+@NoArgsConstructor
+@ToString
+@Data
 public class TableInfo {
+    /**
+     * id序号
+     */
+    private Integer id;
+    /**
+     * 系统名
+     */
+    private String systemName= "";
+    /**
+     * 模块名
+     */
+    private String moduleName= "";
+    /**
+     * 数据库名
+     */
+    private String dbName= "";
     /**
      * 表名
      */
@@ -19,73 +43,17 @@ public class TableInfo {
      */
     private String storageEngine= "";
     /**
-     * 描述
+     * 表描述
      */
     private String description= "";
+
     /**
      * 所有列名
      */
     private List<ColumnInfo> columnList;
 
+    /**
+     * 索引列如果有
+     */
     private List<IndexInfo> indexInfoList;
-
-    public List<IndexInfo> getIndexInfoList() {
-        return indexInfoList;
-    }
-
-    public void setIndexInfoList(List<IndexInfo> indexInfoList) {
-        this.indexInfoList = indexInfoList;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        if(tableName==null){
-            tableName = "";
-        }
-        this.tableName = tableName;
-    }
-
-    public String getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(String orderType) {
-        if(orderType==null){
-            orderType = "";
-        }
-        this.orderType = orderType;
-    }
-
-    public String getStorageEngine() {
-        return storageEngine;
-    }
-
-    public void setStorageEngine(String storageEngine) {
-        if(storageEngine==null){
-            storageEngine = "";
-        }
-        this.storageEngine = storageEngine;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        if(description==null){
-            description = "";
-        }
-        this.description = description;
-    }
-
-    public List<ColumnInfo> getColumnList() {
-        return columnList;
-    }
-
-    public void setColumnList(List<ColumnInfo> columnList) {
-        this.columnList = columnList;
-    }
 }

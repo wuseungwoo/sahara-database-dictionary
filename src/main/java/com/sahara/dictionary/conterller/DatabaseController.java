@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,8 @@ import java.util.List;
 @Controller
 public class DatabaseController {
     static Logger logger = LoggerFactory.getLogger(DatabaseController.class);
+    @Resource
+    private BuildPgSqlPdf buildPgSqlPdf;
 
     @RequestMapping(value = "/history.action",method = RequestMethod.GET)
     public String history(Model model){
@@ -86,7 +89,7 @@ public class DatabaseController {
                     break;
 
                 case "PostgreSQL":
-                    markdown = BuildPgSqlPdf.getPgMarkdown(ip, database, port, username, password);
+                    markdown = buildPgSqlPdf.getPgMarkdown(ip, database, port, username, password);
                     break;
                 case "DB2":
                     tableInfo = Db2Executor.getDB2Tables(ip, Integer.valueOf(port), database.toUpperCase(), username, password);
@@ -163,7 +166,7 @@ public class DatabaseController {
                 case "SQL server":
                     return WriteSqlserverMarkDown.MakeMarkdownString(ip, database, port, username, password);
                 case "PostgreSQL":
-                    return  BuildPgSqlPdf.getPgMarkdown(ip, database, port, username, password);
+                    return  buildPgSqlPdf.getPgMarkdown(ip, database, port, username, password);
                 case "DB2":
                     tableInfo = Db2Executor.getDB2Tables(ip, Integer.valueOf(port), database.toUpperCase(), username, password);
                     break;
@@ -205,7 +208,7 @@ public class DatabaseController {
                     BuildSqlserverPDF.MakePdf(ip, database, port, username, password,res);
                     break;
                 case "PostgreSQL":
-                    BuildPgSqlPdf.buildPdf(ip, database, port, username, password,res);
+                    buildPgSqlPdf.buildPdf(ip, database, port, username, password,res);
                     break;
                 case "DB2":
                     List<TableInfo> Db2tableInfo = Db2Executor.getDB2Tables(ip, Integer.valueOf(port), database, username, password);

@@ -4,12 +4,15 @@ import com.sahara.dictionary.bean.ColumnInfo;
 import com.sahara.dictionary.bean.IndexInfo;
 import com.sahara.dictionary.bean.TableInfo;
 import com.sahara.dictionary.dao.ConnectionFactory;
-import com.sahara.dictionary.util.TableBasicEnum;
 import com.sahara.dictionary.service.BuildPDF;
+import com.sahara.dictionary.service.SaveDataDict;
+import com.sahara.dictionary.util.TableBasicEnum;
 import com.sahara.dictionary.util.YouDaoUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,10 +23,13 @@ import java.util.List;
 /**
  * 构建pg数据库pdf
  */
+@Component
 public class BuildPgSqlPdf {
     static Logger logger = LoggerFactory.getLogger(BuildPgSqlPdf.class);
+    @Resource
+    private SaveDataDict saveDataDict;
 
-    public static void buildPdf(String ip, String dbName, String port, String userName, String passWord, HttpServletResponse response) throws Exception {
+    public void buildPdf(String ip, String dbName, String port, String userName, String passWord, HttpServletResponse response) throws Exception {
         //得到生成数据
         String url = "jdbc:postgresql://" + ip + ":" + port + "/" + dbName;
         Connection connection = ConnectionFactory.getConnection(url, userName, passWord, "pgSql");
@@ -33,6 +39,7 @@ public class BuildPgSqlPdf {
         }
 
         try {
+            saveDataDict.saveData(list);
             BuildPDF.getDocumentBuild(list, response);
         } catch (Exception e) {
             logger.error("生成PG数据库pdf异常", e);
@@ -48,6 +55,10 @@ public class BuildPgSqlPdf {
             Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
+                //TODO just test sava data
+                if (tableInfos.size() > 2) {
+                    return tableInfos;
+                }
                 TableInfo tableInfo = new TableInfo();
                 String schemaName = resultSet.getString(1);
                 String tableName = resultSet.getString(2);
@@ -160,7 +171,7 @@ public class BuildPgSqlPdf {
         return BuildPDF.dest(key, "\"");
     }
 
-    public static String getPgMarkdown(String ip, String dbName, String port, String userName, String passWord) throws Exception {
+    public String getPgMarkdown(String ip, String dbName, String port, String userName, String passWord) throws Exception {
         //得到生成数据
         int socketTimeout = 60000;
         String url = "jdbc:postgresql://" + ip + ":" + port + "/" + dbName;
@@ -169,6 +180,7 @@ public class BuildPgSqlPdf {
         if (list.size() == 0) {
             return "## 数据库无数据";
         }
+        saveDataDict.saveData(list);
         return BuildPDF.writeMarkdown(list);
     }
 
